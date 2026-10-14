@@ -1,0 +1,23 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Valgrind
+        run: sudo apt-get update && sudo apt-get install -y valgrind
+      - name: Build
+        run: make CC=gcc
+      - name: Run both policies on every workload under Valgrind
+        run: |
+          for w in "Workload Samples"/*.txt; do
+            valgrind --error-exitcode=1 --leak-check=full -q ./sched --policy=FCFS --in="$w"
+            valgrind --error-exitcode=1 --leak-check=full -q ./sched --policy=RR --quantum=2 --in="$w"
+          done
+      - name: Check the README example output
+        run: |
+          ./sched --policy=RR --quantum=2 --in="Workload Samples/workload1.txt" | tee out.txt
+          grep -q "System: ctx_switches=5, avgTAT=7.333, avgRESP=0.667" out.txt
