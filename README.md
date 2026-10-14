@@ -1,5 +1,7 @@
 # CPU Scheduler Simulator
 
+![tests](https://github.com/singhg349-wq/cpu-scheduler-simulator/actions/workflows/tests.yml/badge.svg)
+
 A command-line CPU scheduling simulator written in C. It reads a workload of processes from a file and simulates how they'd be scheduled under two classic scheduling policies: **First-Come, First-Served (FCFS)** and **Round Robin (RR)**. It then prints a tick-by-tick execution timeline along with standard scheduling metrics.
 
 ## Features
@@ -65,7 +67,7 @@ System: ctx_switches=5, avgTAT=7.333, avgRESP=0.667
 make valgrind
 ```
 
-Runs both policies through Valgrind's leak checker.
+Runs both policies through Valgrind's leak checker. GitHub Actions also builds the simulator on every push, runs both policies on both sample workloads under Valgrind, and checks the Round Robin example output above.
 
 ## Design Notes
 
@@ -90,6 +92,10 @@ Runs both policies through Valgrind's leak checker.
   resuming after CPU idle time isn't miscounted as a switch.
 
   
+## License
+
+MIT
+
 ## Author
 
 Gurshmeer Singh
